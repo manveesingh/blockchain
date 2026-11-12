@@ -1,20 +1,7 @@
-ximport networkx as nx
-from collections import defaultdict
+# Address Clustering (Common-Input Heuristic)
 
-# toy transactions: (inputs, outputs, amount)
-txs = [
-    (["A", "B"], ["X"], 2.0),
-    (["B", "C"], ["Y"], 1.5),
-    (["D"], ["Z"], 0.7),
-    (["E", "D"], ["W"], 3.1),
-]
+A small Python exploration of blockchain forensics, built on Nov 12, 2026 to learn how addresses are grouped by likely owner.
 
-# common-input heuristic: addresses spent together likely share an owner
-G = nx.Graph()
-for ins, outs, amt in txs:
-    G.add_nodes_from(ins + outs)
-    for a in ins[1:]:
-        G.add_edge(ins[0], a)
+Uses networkx on a toy transaction list. If addresses are spent together as inputs in one transaction, they probably share an owner, so they are linked in a graph and each connected group is a cluster.
 
-clusters = [sorted(c) for c in nx.connected_components(G) if len(c) > 1]
-print("Likely same-owner clusters:", clusters)
+Run: `pip install networkx` then `python address_clustering.py`
